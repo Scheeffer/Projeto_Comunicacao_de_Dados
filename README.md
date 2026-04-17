@@ -16,26 +16,24 @@ leitura/controle de todos os sensores/atuadores em todas as redes.
 
 3) Requisitos de Hardware por Célula:
 Cada dupla deve montar uma bancada contendo:
-1 Sensor (ex: ultrassônico, temperatura, gás, etc).
-1 Atuador (ex: Relé ligado a um dispositivo, Inversor de Frequência, Motor,
-etc).
-1 Controlador (CLP, sistema embarcado genérico) que suporte o protocolo
-designado.
+   - 1 Sensor (ex: ultrassônico, temperatura, gás, etc).
+   - 1 Atuador (ex: Relé ligado a um dispositivo, Inversor de Frequência, Motor, etc).
+   - 1 Controlador (CLP, sistema embarcado genérico) que suporte o protocolo designado.
 
 4) O Protocolo de Integração (A "Língua Geral"):
 Para que uma rede fale com a outra, a turma deverá definir em conjunto uma
 Tabela Global de Variáveis.
-   a) Estratégia de Backbone (Espinha Dorsal)
-   A integração será feita através de um Backbone Ethernet.
+   A) Estratégia de Backbone (Espinha Dorsal)
+      A integração será feita através de um Backbone Ethernet.
     - Redes seriais, por exemplo, (Modbus RTU / PROFIBUS) deverão usar um Gateway ou um CLP com duas portas para "subir" seus dados para o nível Ethernet.
 
     - Todas as duplas devem mapear seus dados para um servidor central (pode ser um CLP Mestre ou um Broker MQTT/OPC UA) ou usar comunicação direta (Peer-to-Peer) entre os controladores.
   
-  b) Regra de Ouro da Interoperabilidade
+  B) Regra de Ouro da Interoperabilidade
   Cada dupla deve disponibilizar para a rede global:
-  1. Status do Sensor: (Booleano ou Inteiro).
-  2. Comando do Atuador: (Variável que pode ser escrita por terceiros).
-  3. Diagnóstico: (Bit que indica se a rede daquela dupla está online).
+     - Status do Sensor: (Booleano ou Inteiro).
+     - Comando do Atuador: (Variável que pode ser escrita por terceiros).
+     - Diagnóstico: (Bit que indica se a rede daquela dupla está online).
 
 5) Dinâmica do Projeto Final:
    A) Fase de Configuração: Cada dupla coloca sua rede local para funcionar (ela consegue controlar o atuador e ler o sensor interno).
