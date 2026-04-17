@@ -23,6 +23,7 @@ Cada dupla deve montar uma bancada contendo:
 4) O Protocolo de Integração (A "Língua Geral"):
 Para que uma rede fale com a outra, a turma deverá definir em conjunto uma
 Tabela Global de Variáveis.
+
    A) Estratégia de Backbone (Espinha Dorsal)
       A integração será feita através de um Backbone Ethernet.
     - Redes seriais, por exemplo, (Modbus RTU / PROFIBUS) deverão usar um Gateway ou um CLP com duas portas para "subir" seus dados para o nível Ethernet.
