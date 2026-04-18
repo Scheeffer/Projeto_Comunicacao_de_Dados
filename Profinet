@@ -1,0 +1,5 @@
+Hardware: 1 CLP S7-1214C, 1 Inversor de Frequência Sinamics G120C e 1 IHM KTP 1200.
+
+- Configuração do nome do dispositivo (Device Name) e endereçamento IP.
+- Comunicação I/O Controller (CLP Mestre) com I/O Device (Inversor e IHM).
+- Desafio: Garantir que o GSDML do inversor esteja correto no software de engenharia (como o TIA Portal).
