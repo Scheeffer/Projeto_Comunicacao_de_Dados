@@ -1,1 +1,8 @@
+Aqui vamos centralizando a estrutura que vamos construir para conectar as tres redes 
 
+- A pricipio cada um dos protocolos terá que se comunicar via ethernet a um computador central onde faremos um banco de dados capaz de a ler e escreer os valores em cada rede
+
+-> Rede 1 - Profinet
+- CLP Siemens 1214C (mestre)
+- Inversor de frequencia G120c
+- CLP 
