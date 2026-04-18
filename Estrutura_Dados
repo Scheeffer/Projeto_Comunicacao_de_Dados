@@ -2,11 +2,23 @@ Aqui vamos centralizando a estrutura que vamos construir para conectar as tres r
 
 - A pricipio cada um dos protocolos terá que se comunicar via ethernet a um computador central onde faremos um banco de dados capaz de a ler e escreer os valores em cada rede
 
--> Rede 1 - Profinet (Cabo de rede CAT5e)
+-> Rede 1 - Profinet (Cabo de rede CAT5e) (Cainã e Krone)
   - CLP Siemens 1214C (mestre)
   - Inversor de frequencia G120c
   - IHM KTP 1200, que simulara botões de acionamento, o feedback do inversor e tera um deslizante para simular um sensor analogico) 
       Alem disso podera ser lido os outros sensores e atuadores das demais redes
 
--> Rede 2 - Modbus RTU RS485 (Cabo blindado 3 vias) 
-  - CLP Siemens 
+-> Rede 2 - Modbus RTU RS485 (Cabo blindado 3 vias) (Alexandre e Alvaro)
+  - CLP Siemens (Mestre) Verificar no ifsc)
+  - inversor de frequencia com modbus (simulandoum ventilador) (verificar no ifsc)
+  - Sensor temperatura LM35 com modulo de aquisição ADAM-4017
+
+-> Rede 3 - MQTT   (Lucas e Henzo)
+  - ESP32 (mestre)
+  - ESP32 sensor
+  - ESP32 atuador
+
+-> interligação das Rede (Todos)
+  - um swite ethernet 
+  - um modem wifi
+  - um PC pra rodar o software de exibição e controle dos dados
