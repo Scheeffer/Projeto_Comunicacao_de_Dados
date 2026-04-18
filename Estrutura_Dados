@@ -1,4 +1,4 @@
-Aqui vamos centralizando a estrutura que vamos construir para conectar as tres redes 
+Aqui vamos centralizando a estrutura que construiresmos para conectar as tres redes 
 
 - A pricipio cada um dos protocolos terá que se comunicar via ethernet a um computador central onde faremos um banco de dados capaz de a ler e escreer os valores em cada rede
 
