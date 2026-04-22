@@ -3,3 +3,56 @@ Hardware: 1 CLP S7-1214C, 1 Inversor de Frequência Sinamics G120C e 1 IHM KTP 1
 - Configuração do nome do dispositivo (Device Name) e endereçamento IP.
 - Comunicação I/O Controller (CLP Mestre) com I/O Device (Inversor e IHM).
 - Desafio: Garantir que o GSDML do inversor esteja correto no software de engenharia (como o TIA Portal).
+
+Para explicar as camadas de rede no Profinet, precisamos desmistificar uma coisa: embora ele utilize o conector RJ45 e cabos Ethernet, 
+ele não se comporta como a internet comum em todas as camadas. O Profinet "pula" etapas para ganhar velocidade.
+
+Estrutura de Camadas: O Modelo ISO/OSI no ProfinetDiferente do tráfego web (TCP/IP), o Profinet utiliza diferentes caminhos dependendo da urgência do dado.
+
+1. Camada Física (Physical Layer)
+
+É onde ocorre a transmissão dos bits. No seu projeto:
+Meio: Cabo Ethernet industrial blindado (Cat5e ou superior).
+Topologia: Como o G120C e o S7-1200 geralmente possuem duas portas, você pode usar a topologia em Anel ou Linha (Daisy Chain).
+Característica: Full-duplex a 100 Mbps.
+
+2. Camada de Enlace (Data Link Layer)
+Aqui é onde a "mágica" do tempo real acontece. O Profinet utiliza o Protocolo de Tempo Real (RT).
+Endereçamento: Usa o endereço MAC dos dispositivos para entregar os frames.
+Priorização: Ele utiliza o padrão IEEE 802.1Q (VLAN) para dar prioridade máxima aos frames de controle (VLAN ID 0, Prioridade 6). 
+Isso garante que o comando para o inversor G120C não "pegue trânsito" atrás de um dado menos importante.
+
+3. Camadas de Rede e Transporte (Network/Transport Layers)
+
+Aqui o Profinet se divide em dois mundos:
+Para Dados Não Críticos (TCP/UDP e IP): Usado para a IHM KTP1200, diagnósticos e configuração (download do TIA Portal). É aqui que você define o endereço IP (ex: 192.168.0.1).
+Para Dados Críticos (IO Data): O Profinet ignora as camadas de IP e TCP (camadas 3 e 4). Ele envia o dado diretamente da Camada 2 para a Aplicação.
+Por que? Processar o cabeçalho IP e TCP gasta milissegundos preciosos. Pulando isso, o CLP fala com o Inversor em menos de 10ms de forma constante (determinismo).
+
+Características da Comunicação de Dados no seu Kit
+
+1. O Ciclo de Comunicação (Update Time)
+
+Entre o S7-1214C e o G120C, ocorre uma troca de "Telegramas". 
+Mesmo que o motor esteja parado, o CLP e o Inversor trocam mensagens para dizer: "Estou aqui e estou bem". No TIA Portal, você configurará o Update Time (ex: 2ms ou 4ms).
+
+2. Device Name vs. Endereço IP
+
+Isso é crucial para a explicação:No Profinet, o IP é apenas uma "etiqueta" para ferramentas de PC.
+A comunicação real de controle acontece via Device Name (ex: inversor-esteira-01). 
+Se você trocar o inversor por um novo, ele não funcionará apenas configurando o IP; você precisa "atribuir o nome" a ele via rede.
+
+3. Telegramas de Dados (Profidrive)
+
+Para o Inversor G120C, a comunicação de dados é estruturada em Telegramas PZD.
+Palavra de Comando (STW): O CLP envia bits para ligar, desligar ou resetar falhas.
+Setpoint (HSW): O CLP envia a velocidade desejada (0 a 16384 em hexadecimal).
+Palavra de Status (ZSW) e Valor Real (HIW): O inversor responde com a velocidade real e se há alarmes.
+
+Resumo para sua Apresentação
+
+Característica                     Detalhe Técnico
+Protocolo Principal                Profinet IO (RT - Real Time)
+Endereçamento de Controle          Baseado em Nome do Dispositivo (Device Name)
+Interoperabilidade                 Permite tráfego TCP/IP (IHM) e RT (Inversor) no mesmo cabo
+Vantagem                           Determinismo (o dado chega sempre no tempo previsto)
