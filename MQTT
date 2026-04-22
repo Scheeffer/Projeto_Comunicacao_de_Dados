@@ -1,0 +1,9 @@
+Hardware: 3 ESP32/ESP8266.
+
+Foco: Conexão Wi-Fi e protocolo Publish/Subscribe.
+
+Arquitetura: * ESP 1: Publica o valor do sensor de luminosidade no tópico casa/sala/luminosidade.
+
+ESP 2: Subscreve ao tópico casa/sala/led para acionar a carga.
+
+ESP 3 (Gateway/Bridge): Pode servir como o coordenador ou apenas um monitor de tráfego.
