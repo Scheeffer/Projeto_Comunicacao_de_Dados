@@ -1,0 +1,6 @@
+Rede Modbus RTU (Serial e Simplicidade)
+Hardware: 1 CLP, 1 Inversor e 1 Sensor (RS-485).
+
+Foco: Parâmetros físicos (Baud rate, Paridade, Stop bits) e mapeamento de registradores (Holding Registers).
+
+Dinamismo: O CLP atuará como Master, lendo o registro do sensor e escrevendo a frequência no inversor via comandos hexadecimais.
