@@ -1,0 +1,6 @@
+Para integrar protocolos tão distintos, vocês precisam de um Gateway de Comunicação ou um Broker Intermediário. Existem duas formas principais de fazer isso:
+
+Opção A: Supervisório com Drivers Múltiplos (Software)
+Utilizar um software como Node-RED (rodando em um Raspberry Pi ou PC).
+
+Como funciona: O Node-RED possui "nós" para falar Profinet (S7), Modbus e MQTT simultaneamente. Ele lê a variável do Modbus e a republica no MQTT, ou pega um comando do MQTT e escreve no CLP Profinet.
