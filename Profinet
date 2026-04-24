@@ -7,20 +7,19 @@ Hardware: 1 CLP S7-1214C, 1 Inversor de Frequência Sinamics G120C e 1 IHM KTP 1
 Para explicar as camadas de rede no Profinet, precisamos desmistificar uma coisa: embora ele utilize o conector RJ45 e cabos Ethernet, 
 ele não se comporta como a internet comum em todas as camadas. O Profinet "pula" etapas para ganhar velocidade.
 
-Estrutura de Camadas: O Modelo ISO/OSI no ProfinetDiferente do tráfego web (TCP/IP), o Profinet utiliza diferentes caminhos dependendo da urgência do dado.
-
 1. Camada Física (Physical Layer)
 
-É onde ocorre a transmissão dos bits. No seu projeto:
+É onde ocorre a transmissão dos bits.
 Meio: Cabo Ethernet industrial blindado (Cat5e ou superior).
-Topologia: Como o G120C e o S7-1200 geralmente possuem duas portas, você pode usar a topologia em Anel ou Linha (Daisy Chain).
+Topologia: Cada um dos equipamentos irá conectar em um swite central.
 Característica: Full-duplex a 100 Mbps.
 
 2. Camada de Enlace (Data Link Layer)
-Aqui é onde a "mágica" do tempo real acontece. O Profinet utiliza o Protocolo de Tempo Real (RT).
+
+O Profinet utiliza o Protocolo de Tempo Real (RT).
 Endereçamento: Usa o endereço MAC dos dispositivos para entregar os frames.
 Priorização: Ele utiliza o padrão IEEE 802.1Q (VLAN) para dar prioridade máxima aos frames de controle (VLAN ID 0, Prioridade 6). 
-Isso garante que o comando para o inversor G120C não "pegue trânsito" atrás de um dado menos importante.
+Isso garante que o comando para o inversor G120C não demore para executar.
 
 3. Camadas de Rede e Transporte (Network/Transport Layers)
 
