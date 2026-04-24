@@ -28,7 +28,7 @@ Para Dados Não Críticos (TCP/UDP e IP): Usado para a IHM KTP1200, diagnóstico
 Para Dados Críticos (IO Data): O Profinet ignora as camadas de IP e TCP (camadas 3 e 4). Ele envia o dado diretamente da Camada 2 para a Aplicação.
 Por que? Processar o cabeçalho IP e TCP gasta milissegundos preciosos. Pulando isso, o CLP fala com o Inversor em menos de 10ms de forma constante (determinismo).
 
-Características da Comunicação de Dados no seu Kit
+Características da Comunicação de Dados
 
 1. O Ciclo de Comunicação (Update Time)
 
