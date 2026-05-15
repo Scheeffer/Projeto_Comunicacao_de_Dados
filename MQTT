@@ -5,7 +5,7 @@ Hardware:
 Foco: Conexão Wi-Fi e protocolo Publish/Subscribe.
 
 Arquitetura: 
-* ESP 1(ESP32S3): Publica o valor dos sensores utilizando protocolo HTTP para o broker central. Recebe dados do ESP 2 e ESP 3, por meio do protocolo MQTT.
+* ESP 1(ESP32S3): Publica o valor dos sensores utilizando protocolo TCP/IP para o broker central. Recebe dados do ESP 2 e ESP 3, por meio do protocolo MQTT.
 
 ESP 2: Recebe e lê dados dos sensores, envia os dados por meio de protocolo MQTT para o ESP1.
 
