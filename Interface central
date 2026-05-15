@@ -1,4 +1,4 @@
-Para integrar protocolos tão distintos, vocês precisam de um Gateway de Comunicação ou um Broker Intermediário. Existem duas formas principais de fazer isso:
+Para integrar protocolos tão distintos, será necessário um Gateway de Comunicação ou um Broker Intermediário. Existem duas formas principais de fazer isso:
 
 Opção A: Supervisório com Drivers Múltiplos (Software)
 Utilizar um software como Node-RED (rodando em um Raspberry Pi ou PC).

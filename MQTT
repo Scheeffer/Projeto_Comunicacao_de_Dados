@@ -1,9 +1,18 @@
-Hardware: 3 ESP32/ESP8266.
+Hardware: 
+- 1xESP32S3
+- 2xESP8266
 
 Foco: Conexão Wi-Fi e protocolo Publish/Subscribe.
 
-Arquitetura: * ESP 1: Publica o valor do sensor de luminosidade no tópico casa/sala/luminosidade.
+Arquitetura: 
+* ESP 1(ESP32S3): Publica o valor dos sensores utilizando protocolo HTTP para o broker central. Recebe dados do ESP 2 e ESP 3, por meio do protocolo MQTT.
 
-ESP 2: Subscreve ao tópico casa/sala/led para acionar a carga.
+ESP 2: Recebe e lê dados dos sensores, envia os dados por meio de protocolo MQTT para o ESP1.
 
-ESP 3 (Gateway/Bridge): Pode servir como o coordenador ou apenas um monitor de tráfego.
+ESP 3 : Quando solicitado, ativa o atuador e envia seu estado atual.
+
+Sensores utilizados:
+- 
+Atuadores utilizados:
+- 
+Descrição: 
