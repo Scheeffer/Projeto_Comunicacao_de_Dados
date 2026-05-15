@@ -8,15 +8,15 @@ Aqui vamos centralizando a estrutura que construiresmos para conectar as tres re
   - IHM KTP 1200, que simulara botões de acionamento, o feedback do inversor e tera um deslizante para simular um sensor analogico) 
       Alem disso podera ser lido os outros sensores e atuadores das demais redes
 
--> Rede 2 - Modbus RTU RS485 (Cabo blindado 3 vias) (Alexandre e Alvaro)
-  - CLP Siemens (Mestre) Verificar no ifsc)
+-> Rede 2 - CAN  (Alexandre e Alvaro)
+  - 3x ESP32S3 (Mestre)
   - inversor de frequencia com modbus (simulandoum ventilador) (verificar no ifsc)
   - Sensor temperatura LM35 com modulo de aquisição ADAM-4017
 
 -> Rede 3 - MQTT   (Lucas e Henzo)
-  - ESP32 (mestre)
-  - ESP32 sensor
-  - ESP32 atuador
+  - ESP32S3 (mestre)
+  - ESP8286 sensor
+  - ESP8286 atuador
 
 -> interligação das Rede (Todos)
   - um swite ethernet 
