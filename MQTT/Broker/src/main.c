@@ -1,9 +1,8 @@
 /*
  * ESP32S3 (ESP1) - Broker MQTT
- * Implementa um broker MQTT mínimo via TCP (QoS 0) usando lwIP.
+ * Implementa um broker MQTT via TCPIP (QoS 0) usando lwIP.
  * Lógica: ao receber "sensor/dados", avalia o valor e publica
  *         "1" ou "0" em "atuador/comando" para o ESP3.
- * Framework: ESP-IDF (C puro)
  */
 
 #include <stdio.h>
