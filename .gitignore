@@ -1,0 +1,8 @@
+# PlatformIO build artifacts
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# VSCode / PlatformIO IDE
+.vscode/
+.clangd

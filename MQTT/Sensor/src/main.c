@@ -1,159 +1,146 @@
 /*
  * ESP8266 (ESP2) - Sensor
- * Lê ADC e publica o valor em MQTT para o broker (ESP32S3).
- * Framework: ESP8266 RTOS SDK (C puro)
+ * Lê o ADC (TOUT/A0) e publica a tensão em MQTT para o broker (ESP32-S3).
+ * Framework: ESP8266 IOT RTOS SDK v1.5 (modelo user_init, C puro).
+ *
+ * Obs.: a placa esp01_1m não expõe fisicamente o pino ADC. Em hardware sem
+ *       ADC acessível, system_adc_read() ainda retorna um valor (ruído).
  */
 
 #include <stdio.h>
 #include <string.h>
+
+#include "esp_common.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "freertos/event_groups.h"
-#include "esp_wifi.h"
-#include "esp_event.h"
-#include "esp_log.h"
-#include "nvs_flash.h"
-#include "mqtt_client.h"
-#include "driver/adc.h"
+
+#include "mqtt_min.h"
 
 /* ── Configurações ─────────────────────────────────────── */
 #define WIFI_SSID        "SUA_REDE_WIFI"
 #define WIFI_PASS        "SUA_SENHA_WIFI"
-#define BROKER_URI       "mqtt://192.168.1.100:1883"  /* IP do ESP32S3 */
+#define BROKER_IP        "192.168.1.100"   /* IP do ESP32-S3 (broker) */
+#define BROKER_PORTA     1883
 #define TOPIC_SENSOR     "sensor/dados"
+#define CLIENT_ID        "ESP8266_Sensor"
+#define KEEPALIVE_S      60
+#define RECV_TIMEOUT_MS  4000
 #define PUB_INTERVALO_MS 5000
 /* ──────────────────────────────────────────────────────── */
 
-static const char *TAG = "SENSOR";
+#ifndef UART_CLK_FREQ
+#define UART_CLK_FREQ    (80 * 1000000)
+#endif
 
-static EventGroupHandle_t       s_wifi_eg;
-#define WIFI_CONECTADO_BIT      BIT0
+/* Função ROM para ajustar o baud rate da UART0 */
+extern void uart_div_modify(uint8 uart_no, uint32 div);
 
-static esp_mqtt_client_handle_t s_mqtt    = NULL;
-static volatile int             s_mqtt_ok = 0;
+static volatile int s_got_ip = 0;
 
-/* ── Handlers ─────────────────────────────────────────── */
+/* ── Handler de eventos WiFi ──────────────────────────── */
 
-static void wifi_handler(void *arg, esp_event_base_t base,
-                         int32_t id, void *data)
+static void wifi_event_cb(System_Event_t *evt)
 {
-    if (base == WIFI_EVENT && id == WIFI_EVENT_STA_START) {
-        esp_wifi_connect();
-
-    } else if (base == WIFI_EVENT && id == WIFI_EVENT_STA_DISCONNECTED) {
-        s_mqtt_ok = 0;
-        esp_wifi_connect();
-        ESP_LOGW(TAG, "WiFi desconectado, reconectando...");
-
-    } else if (base == IP_EVENT && id == IP_EVENT_STA_GOT_IP) {
-        ip_event_got_ip_t *ev = (ip_event_got_ip_t *)data;
-        ESP_LOGI(TAG, "IP obtido: " IPSTR, IP2STR(&ev->ip_info.ip));
-        xEventGroupSetBits(s_wifi_eg, WIFI_CONECTADO_BIT);
-    }
-}
-
-static void mqtt_handler(void *arg, esp_event_base_t base,
-                         int32_t id, void *data)
-{
-    switch ((esp_mqtt_event_id_t)id) {
-    case MQTT_EVENT_CONNECTED:
-        ESP_LOGI(TAG, "MQTT conectado ao broker");
-        s_mqtt_ok = 1;
+    switch (evt->event_id) {
+    case EVENT_STAMODE_GOT_IP:
+        printf("[WIFI] IP obtido\n");
+        s_got_ip = 1;
         break;
-    case MQTT_EVENT_DISCONNECTED:
-        ESP_LOGW(TAG, "MQTT desconectado");
-        s_mqtt_ok = 0;
-        break;
-    case MQTT_EVENT_ERROR:
-        ESP_LOGE(TAG, "Erro MQTT");
+    case EVENT_STAMODE_DISCONNECTED:
+        printf("[WIFI] Desconectado, reconectando...\n");
+        s_got_ip = 0;
         break;
     default:
         break;
     }
 }
 
-/* ── Inicialização ────────────────────────────────────── */
-
 static void wifi_init(void)
 {
-    s_wifi_eg = xEventGroupCreate();
+    wifi_set_opmode(STATION_MODE);
 
-    ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-    esp_netif_create_default_wifi_sta();
-
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-
-    esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID,  wifi_handler, NULL);
-    esp_event_handler_register(IP_EVENT,   IP_EVENT_STA_GOT_IP, wifi_handler, NULL);
-
-    wifi_config_t wifi_cfg;
-    memset(&wifi_cfg, 0, sizeof(wifi_cfg));
-    strncpy((char *)wifi_cfg.sta.ssid,     WIFI_SSID, sizeof(wifi_cfg.sta.ssid)     - 1);
-    strncpy((char *)wifi_cfg.sta.password, WIFI_PASS, sizeof(wifi_cfg.sta.password) - 1);
-
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_cfg));
-    ESP_ERROR_CHECK(esp_wifi_start());
-
-    xEventGroupWaitBits(s_wifi_eg, WIFI_CONECTADO_BIT,
-                        pdFALSE, pdTRUE, portMAX_DELAY);
-}
-
-static void mqtt_init(void)
-{
-    esp_mqtt_client_config_t cfg;
+    struct station_config cfg;
     memset(&cfg, 0, sizeof(cfg));
-    cfg.uri       = BROKER_URI;
-    cfg.client_id = "ESP8266_Sensor";
+    strncpy((char *)cfg.ssid,     WIFI_SSID, sizeof(cfg.ssid)     - 1);
+    strncpy((char *)cfg.password, WIFI_PASS, sizeof(cfg.password) - 1);
+    cfg.bssid_set = 0;
 
-    s_mqtt = esp_mqtt_client_init(&cfg);
-    esp_mqtt_client_register_event(s_mqtt, ESP_EVENT_ANY_ID, mqtt_handler, NULL);
-    esp_mqtt_client_start(s_mqtt);
+    /* Em user_init, set_config dispara a conexão automaticamente. */
+    wifi_station_set_config(&cfg);
+    wifi_station_set_reconnect_policy(1);
+    wifi_set_event_handler_cb(wifi_event_cb);
 }
 
 /* ── Task de leitura e publicação ─────────────────────── */
 
 static void sensor_task(void *pv)
 {
-    /* ADC no modo TOUT (pino A0), divisor de clock 8 */
-    adc_config_t adc_cfg = {
-        .mode    = ADC_READ_TOUT_MODE,
-        .clk_div = 8,
-    };
-    adc_init(&adc_cfg);
+    mqtt_client_t client;
+    client.sock = -1;
 
     for (;;) {
-        if (s_mqtt_ok) {
-            uint16_t raw = 0;
-            adc_read(&raw);
-
-            /* O ADC do ESP8266 tem referência de 1,0 V (0-1023).
-             * Ajuste o cálculo caso seu hardware tenha divisor de tensão. */
-            float tensao = raw * (1.0f / 1023.0f);
-
-            char payload[32];
-            snprintf(payload, sizeof(payload), "%.3f", tensao);
-
-            int msg_id = esp_mqtt_client_publish(s_mqtt, TOPIC_SENSOR,
-                                                 payload, 0, 1, 0);
-            ESP_LOGI(TAG, "Publicado [%s] -> \"%s\" (msg_id=%d)",
-                     TOPIC_SENSOR, payload, msg_id);
-        } else {
-            ESP_LOGD(TAG, "MQTT indisponível, aguardando...");
+        if (!s_got_ip) {
+            vTaskDelay(500 / portTICK_RATE_MS);
+            continue;
         }
 
-        vTaskDelay(pdMS_TO_TICKS(PUB_INTERVALO_MS));
+        if (client.sock < 0) {
+            printf("[MQTT] Conectando ao broker %s:%d ...\n", BROKER_IP, BROKER_PORTA);
+            if (mqtt_connect(&client, BROKER_IP, BROKER_PORTA,
+                             CLIENT_ID, KEEPALIVE_S, RECV_TIMEOUT_MS) != 0) {
+                printf("[MQTT] Falha na conexao; nova tentativa em 3s\n");
+                vTaskDelay(3000 / portTICK_RATE_MS);
+                continue;
+            }
+            printf("[MQTT] Conectado ao broker\n");
+        }
+
+        /* ADC do ESP8266: 0-1023, referência interna de 1,0 V. */
+        uint16 raw = system_adc_read();
+        float  tensao = raw * (1.0f / 1023.0f);
+
+        char payload[32];
+        snprintf(payload, sizeof(payload), "%.3f", tensao);
+
+        if (mqtt_publish(&client, TOPIC_SENSOR, payload) != 0) {
+            printf("[MQTT] Falha ao publicar; reconectando\n");
+            mqtt_close(&client);
+            continue;
+        }
+        printf("[SENSOR] [%s] -> \"%s\" (raw=%u)\n", TOPIC_SENSOR, payload, raw);
+
+        vTaskDelay(PUB_INTERVALO_MS / portTICK_RATE_MS);
     }
+}
+
+/* ── Boilerplate obrigatório do SDK v1.5 ──────────────── */
+
+uint32 user_rf_cal_sector_set(void)
+{
+    flash_size_map size_map = system_get_flash_size_map();
+    uint32 rf_cal_sec = 0;
+
+    switch (size_map) {
+        case FLASH_SIZE_4M_MAP_256_256:   rf_cal_sec = 128 - 5;  break;
+        case FLASH_SIZE_8M_MAP_512_512:   rf_cal_sec = 256 - 5;  break;
+        case FLASH_SIZE_16M_MAP_512_512:
+        case FLASH_SIZE_16M_MAP_1024_1024: rf_cal_sec = 512 - 5;  break;
+        case FLASH_SIZE_32M_MAP_512_512:
+        case FLASH_SIZE_32M_MAP_1024_1024: rf_cal_sec = 1024 - 5; break;
+        case FLASH_SIZE_64M_MAP_1024_1024: rf_cal_sec = 2048 - 5; break;
+        case FLASH_SIZE_128M_MAP_1024_1024: rf_cal_sec = 4096 - 5; break;
+        default:                          rf_cal_sec = 0;        break;
+    }
+    return rf_cal_sec;
 }
 
 /* ── Entry point ──────────────────────────────────────── */
 
-void app_main(void)
+void user_init(void)
 {
-    ESP_ERROR_CHECK(nvs_flash_init());
+    uart_div_modify(0, UART_CLK_FREQ / 115200);
+    printf("\n[BOOT] Sensor MQTT - SDK %s\n", system_get_sdk_version());
+
     wifi_init();
-    mqtt_init();
-    xTaskCreate(sensor_task, "sensor_task", 4096, NULL, 5, NULL);
+    xTaskCreate(sensor_task, "sensor_task", 2048, NULL, 4, NULL);
 }
