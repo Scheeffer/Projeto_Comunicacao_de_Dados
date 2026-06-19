@@ -5,7 +5,7 @@
 
 <div align="center">
 
-# 🛰️ Sinapse — Sistema de Automação Heterogêneo
+# 🛰️ NEXUS — Sistema de Automação de Multiredes
 
 **Backbone Ethernet integrando três células de produção com protocolos industriais distintos**
 
