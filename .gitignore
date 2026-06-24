@@ -6,3 +6,5 @@
 # VSCode / PlatformIO IDE
 .vscode/
 .clangd
+
+build/
