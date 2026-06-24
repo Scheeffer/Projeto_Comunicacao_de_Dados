@@ -11,7 +11,7 @@ Aqui vamos centralizando a estrutura que construiresmos para conectar as tres re
 -> Rede 2 - CAN  (Alexandre e Alvaro)
   - 2x ESP32 WROOM
   - Painel de Instrumento E620(Atuador)
-  - Sensor(Potenciometro) irá simular um sensor annálogico que ira fazer com que atuador - painel E620 responda em velocidade km/h
+  - Sensor(Potenciometro) irá simular um sensor análogico que ira fazer com que atuador - painel E620 responda em velocidade km/h
 
 -> Rede 3 - MQTT   (Lucas e Henzo)
   - ESP32S3 (mestre)
