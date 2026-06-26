@@ -25,21 +25,21 @@
 
 Projeto final da disciplina de **Comunicação de Dados** (IFSC — Departamento Acadêmico de Eletrônica). O objetivo é a **construção coletiva de um sistema de automação heterogêneo**: três duplas, três protocolos distintos, **uma única rede integrada**.
 
-O critério central é a **interoperabilidade**: ao final, *qualquer sensor da sala deve poder ser lido por qualquer célula, e qualquer atuador deve poder ser comandado, independentemente da rede em que esteja fisicamente conectado.*
+O critério central é a **interoperabilidade**: ao final, *o status de qualquer sensor da sala deve poder ser lido por qualquer célula, e qualquer atuador deve poder ser comandado, independentemente da rede em que esteja fisicamente conectado.*
 
-| Item | Valor |
+| Item | Descrição |
 |------|-------|
 | Instituição | IFSC — Departamento Acadêmico de Eletrônica |
 | Disciplina | Comunicação de Dados |
 | Data da apresentação | **26 de Junho de 2026** |
 | Integração | Backbone Ethernet + Broker MQTT central (Node-RED) |
-| Tabela Global de Variáveis | Centralizada no Node-RED |
+
 
 ---
 
 ## 2. Descrição geral
 
-O sistema é dividido em **três nós (células de produção)**, cada um construído por uma dupla e operando um **protocolo industrial diferente** na camada local. Cada nó é responsável por:
+O sistema é dividido em **três células de produção**, cada uma com três nós, construído por uma dupla e operando um **protocolo industrial diferente** na camada local. Cada nó é responsável por:
 
 1. **Autonomia local** — ler o próprio sensor e comandar o próprio atuador *sem depender da rede externa*.
 2. **Visibilidade global** — espelhar suas variáveis no backbone para que as outras células leiam/escrevam.
@@ -57,7 +57,7 @@ A "língua geral" que une as três redes é o **MQTT sobre TCP/IP**, agregado po
 |:-----:|:----------------|:------------|:-------|:--------|:-------------------|
 | **1** — Cainã & Matheus | **PROFINET** | CLP Siemens S7‑121xC (`192.168.0.1`) | IHM KTP700 Basic | Inversor SINAMICS G120C | **S7 / ISO‑on‑TCP** (node‑red‑contrib‑s7) |
 | **2** — Álvaro & Alexandre | **CAN** | ESP32 TWAI (`192.168.0.63`) | Potenciômetro (nó CAN substituto) | Display Dashboard E620 | **HTTP REST** (`/can`, `/set_nodered_*`) |
-| **3** — Lucas & Henzo | **MQTT** | ESP32 (ESP‑IDF) | Sensor de temperatura | Aquecimento + Refrigeração (GPIO18/19) | **MQTT** (`esp-mqtt`) |
+| **3** — Lucas & Henzo | **MQTT** | PC com Mosquitto | Sensor de temperatura com ESP32S3 | Aquecimento + Refrigeração (GPIO18/19) com ESP32S3 | **MQTT** (`esp-mqtt`) |
 
 Cada célula tem sua documentação completa, diagramas e código nas pastas abaixo.
 
