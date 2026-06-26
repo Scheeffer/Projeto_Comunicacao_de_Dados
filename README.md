@@ -1,5 +1,5 @@
-# Projeto_Comunicacao_de_Dados
-Repositório destinado ao projeto da disciplina de Comunicação de dados
+# Projeto NEXUS
+## CONECTANDO MUNDOS 
 
 1) Objetivo:
 O objetivo desta tarefa é a construção coletiva de um sistema de automação
