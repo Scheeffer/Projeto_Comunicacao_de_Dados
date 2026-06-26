@@ -85,9 +85,9 @@ flowchart TB
     NR["📊 Node-RED<br/>hub S7 + HTTP + MQTT<br/>dashboard + Tabela Global"]
     BROKER["🧠 Broker MQTT<br/>(Mosquitto) — a definir"]
 
-    PLC -- "Aplicação: S7comm /Apresentação: ISO-on-TCP / Transporte: TCP / Rede: IP / Enlace/Física: Ethernet" --> SW
-    ESP2 -- "Aplicação: HTTP REST / Transporte: TCP / Rede IP / Enlace/Física: WIFI802.11" --> SW
-    ESP3 -- "Aplicação:MQTT(v3.1) / Apresentação: MQTT PURO(port1883) / Sessão: TCP/IP / Transporte: TCP / Rede: IP / Enlace/Física: WIFI802.11" --> SW
+    PLC -- "Aplicação: S7comm Apresentação: ISO-on-TCP  Transporte: TCP  Rede: IP  Enlace/Física: Ethernet" --> SW
+    ESP2 -- "Aplicação: HTTP REST  Transporte: TCP  Rede:IP         Enlace/Física: WIFI802.11" --> SW
+    ESP3 -- "Aplicação:MQTT(v3.1)  Apresentação: MQTT PURO(port1883)           Sessão: TCP/IP  Transporte: TCP  Rede: IP  Enlace/Física: WIFI802.11" --> SW
     SW --- NR
     SW --- BROKER
     BROKER <--> NR
