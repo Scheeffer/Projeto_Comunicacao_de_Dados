@@ -89,7 +89,7 @@ flowchart TB
     NR["📊 Node-RED<br/>hub S7 + HTTP + MQTT<br/>dashboard + Tabela Global"]
     BROKER["🧠 Broker MQTT<br/>(Mosquitto) — a definir"]
 
-    PLC -- "S7 / ISO-on-TCP" --> SW
+    PLC -- "Aplicação: S7comm /Apresentação: ISO-on-TCP / Transporte: TCP / Rede: IP / Enlace/Física: Ethernet" --> SW
     ESP2 -- "HTTP REST" --> SW
     ESP3 -- "MQTT (TCP)" --> SW
     SW --- NR
@@ -100,7 +100,7 @@ flowchart TB
     class CELULA1,CELULA2,CELULA3 cell;
 ```
 
-**Leitura do diagrama:** cada célula resolve sua automação localmente (autonomia, 25%) e sobe seus dados ao **Node-RED** pelo protocolo que já domina — **S7** (PROFINET), **HTTP** (CAN) ou **MQTT**. O Node-RED atua como **hub multi-protocolo**, mantém a **Tabela Global de Variáveis** e expõe o **dashboard** de monitoramento e override (visibilidade, 20%; backbone, 35%). Não se força uma "língua geral" única no fio — a unificação acontece **dentro** do Node-RED.
+Cada célula resolve sua automação localmente e sobe seus dados ao **Node-RED**, sendo ele o servidor central pelo protocolo que é própria da célula de produção — **S7** (PROFINET), **HTTP** (CAN) ou **MQTT**. O Node-RED atua como **hub multi-protocolo**, mantém a **Tabela Global de Variáveis** e expõe o **dashboard** de monitoramento e o sobreescreve. A unificação acontece **dentro** do Node-RED.
 
 ---
 
