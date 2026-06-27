@@ -4,9 +4,7 @@
 [![MCU](https://img.shields.io/badge/MCU-ESP32%20DevKit-blueviolet.svg)](#)
 [![Framework](https://img.shields.io/badge/framework-ESP--IDF%20(PlatformIO)-yellow.svg)](https://platformio.org/)
 
-Célula de produção que usa **MQTT** como protocolo. Um **ESP32** (ESP-IDF) atua como **cliente MQTT**: publica o estado do processo e recebe comandos. O processo controlado é **térmico** — o atuador tem um canal de **aquecimento** e um de **refrigeração**.
-
-> 📝 **Nota de evolução:** versões anteriores deste projeto consideraram uma arquitetura de dois níveis (ESP32-S3 como broker local + 2× ESP8266). O firmware **efetivamente implementado** simplificou para um **único ESP32 cliente** sobre ESP-IDF (`esp-mqtt`). Esta documentação reflete o que está no código.
+Célula de produção que usa **MQTT** como protocolo. Um **ESP32** (ESP-IDF) atua como **cliente MQTT**: publica o estado do processo e recebe comandos. O segundo **ESP32** é responsávelpor controlar o **sensor térmico** — o atuador tem um canal de **aquecimento** e um de **refrigeração**.
 
 ---
 
@@ -14,13 +12,13 @@ Célula de produção que usa **MQTT** como protocolo. Um **ESP32** (ESP-IDF) at
 
 O ESP32 lê a temperatura do processo, decide localmente o estado (desligado / aquecendo / refrigerando) e aciona as saídas correspondentes. Em paralelo, publica o estado via MQTT e pode receber comandos/override do backbone.
 
-| Item | Valor |
+| Item | Descrição |
 |------|-------|
 | Controlador | **ESP32** (`esp32doit-devkit-v1`) |
 | Framework | **ESP-IDF** (`espressif32@6.5.0`, IDF 5.1.x) via PlatformIO |
 | Cliente MQTT | `esp-mqtt` (nativo do ESP-IDF) |
 | Atuador | Aquecimento (**GPIO18**) + Refrigeração (**GPIO19**) |
-| Sensor | Temperatura *(arquivo de sensor ainda não versionado — ver pendências)* |
+| Sensor | Temperatura *DS18B20* |
 
 ### Estados do sistema (do firmware)
 
@@ -30,7 +28,7 @@ O ESP32 lê a temperatura do processo, decide localmente o estado (desligado / a
 | `AQUECENDO` | 1 | 0 |
 | `REFRIGERANDO` | 0 | 1 |
 
-> ⚙️ **Autonomia (25% da nota):** a decisão `aquecer / refrigerar / desligar` deve rodar **no ESP32**, não no Node-RED. O backbone serve para monitorar e dar override. *(O arquivo de lógica/`main.c` não veio no upload — confirme que a decisão é local.)*
+> ⚙️ **Autonomia:** a decisão `aquecer / refrigerar / desligar` deve rodar **no ESP32**, não no Node-RED. O backbone serve para monitorar e sobreescrever. 
 
 ---
 
@@ -128,11 +126,7 @@ firmware/esp32-idf/
 
 ## 7. Pendências (o que falta versionar)
 
-- [ ] `main/main.c` e implementação `.c` de `wifi`, `mqtt_app`, `atuador` (só os headers vieram)
-- [ ] Arquivo do **sensor** (qual sensor? DS18B20? termistor?) e a leitura de temperatura
 - [ ] Endereço do **broker** e **tópicos** usados no `mqtt_app.c`
-- [ ] Confirmar que a **decisão de controle é local** (autonomia)
-- [ ] Trocar a senha de WiFi que estava exposta no `wifi.h` original
 
 ---
 
