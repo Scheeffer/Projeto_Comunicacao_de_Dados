@@ -43,9 +43,10 @@ Célula que usa **PROFINET** (Ethernet industrial, baseado em Ethernet/IP padrã
 
 ```mermaid
 flowchart LR
-    IHM["IHM KTP700 Basic<br/>192.168.0.10"] == "PROFINET" ==> PLC["CLP S7-1217C<br/>192.168.0.1"]
-    G120["Inversor G120C<br/>192.168.0.5"] == "PROFINET" ==> PLC
-    PLC == "S7 / ISO-on-TCP" ==> NR["Node-RED (backbone)"]
+    IHM["IHM KTP700 Basic<br/>192.168.0.10"] == "PROFINET" ==> SW["FL Swith 1108 <br/>Phoenix Contact"]
+    PLC["CLP S7-1217C<br/>192.168.0.1"] == "PROFINET" ==> SW
+    G120["Inversor G120C<br/>192.168.0.5"] == "PROFINET" ==> SW
+    SW == "S7 / ISO-on-TCP" ==> NR["Node-RED (backbone)"]
 ```
 
 ---
