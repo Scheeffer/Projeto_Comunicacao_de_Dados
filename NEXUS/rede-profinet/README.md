@@ -13,20 +13,22 @@ Célula que usa **PROFINET** (Ethernet industrial, baseado em Ethernet/IP padrã
 
 | Item | Valor |
 |------|-------|
-| Controlador | CLP Siemens **S7‑121x C** (endpoint `192.168.0.1`, rack 0 / slot 1) |
-| Sensor / IHM | **IHM KTP700 Basic** (HMI) |
-| Atuador | **Inversor de frequência SINAMICS G120C** |
+| Controlador | CLP Siemens **S7‑1217 C** (endpoint `192.168.0.1`, rack 0 / slot 1) |
+| Sensor / IHM | **IHM KTP700 Basic** (endpoint `192.168.0.10`) |
+| Atuador | **Inversor de frequência SINAMICS G120C** (endpoint `192.168.0.5`) |
 | Bridge backbone | **S7 / ISO‑on‑TCP** via `node‑red‑contrib‑s7` (cycletime 1000 ms) |
-| Ambiente | TIA Portal _(versão: preencher — ex. V17/V18)_ |
+| Ambiente | TIA Portal _(versão: V20)_ |
 
 ### Variáveis expostas ao Node-RED (DB4)
 
 | Nome | Endereço | Tipo | Uso |
 |------|----------|------|-----|
 | `START` | `DB4.DBX0.0` | bool | Liga o inversor |
-| `STOP` | `DB4.DBX0.1` | bool | Para o inversor |
-| `ENTRADA_REF_FREQUENCIA` | `DB4.DBD10` | dword/real | Referência de frequência |
-| `FBK_REF_FREQUENCIA` | `DB4.DBD14` | dword/real | Feedback de frequência |
+| `STOP` | `DB4.DBX0.1` | bool | Desliga o inversor |
+| `ENTRADA_REF_FREQUENCIA` | `DB4,REAL2` | real | Seta frequência |
+| `FDK_HZ` | `DB2,REAL6` | real | Feedback de frequência |
+| `RESET_INV` | `DB4,x0.2` | bool | Reseta as falhas no inversor de frequência |
+| `HABILITA NODE RED` | `DB2,X10.1` | bool | Habilita o comando via node red |
 
 > ⚠️ No flow atual, o endereço de `STOP` aparece como **`DB4.DBX.0.1`** (ponto extra) — corrigir para **`DB4.DBX0.1`**, senão o nó S7 não resolve.
 
