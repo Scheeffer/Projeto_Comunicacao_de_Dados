@@ -30,6 +30,11 @@ Célula que usa **PROFINET** (Ethernet industrial, baseado em Ethernet/IP padrã
 | `RESET_INV` | `DB4,x0.2` | bool | Reseta as falhas no inversor de frequência |
 | `HABILITA NODE RED` | `DB2,X10.1` | bool | Habilita o comando via node red |
 | `FDK_VEL` | `DB6,REAL4` | real | Feedback da velocidade rede can |
+| `SET_VEL` | `DB6,REAL0` | real | Seta o valor da velocidade rede can |
+| `Liga_AQ` | `DB7,X0.0` | bool | Liga o Aquecedor rede MQTT |
+| `Liga_Vent` | `DB7,X0.1` | bool | Liga o Ventilador rede MQTT |
+| `Desliga_Vent_AQ` | `DB7,X0.2` | bool | Desliga o Ventilador ou o Aquecedor rede MQTT |
+| `FDK_temp` | `DB7,REAL2` | real | Feedback do valor da temperatura rede MQTT |
 
 
 ---
