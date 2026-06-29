@@ -8,6 +8,7 @@
 ## 1. Descrição do projeto
 
 O protocolo local utilizado é o **PROFINET**, com um CLP s7 1217C operando como mestre da rede, uma IHM operando como sensor e tela de visualização e um Inversor de Frequência, atuando como um atuador final. O CLP também atua como **bridge** para o backbone (node-red) via protocolo **S7 / ISO‑on‑TCP**, um protocolo nativo do proprio CLP. 
+
 A ideia dentro desta rede é de controlar um motor de 380V e 2cv de potencia atraves de um inversor de frequencia, para isso sera usado a IHM para definir a frequencia, ligar e desligar o motor. Toda a comunicação dentro desta rede independe do backbone, podendo funcionar de forma offline. O grande diferencial desta abordagem é poder conectar dois mundos aparentemente distantes: um motor de alta potencia e um Dashboard altamente tecnologico e moderno.  
 
 | Item | Valor |
@@ -67,6 +68,19 @@ stateDiagram-v2
 ## 4. Componentes e versões
 
 Ver [`componentes/README.md`](componentes/README.md). Tabela de versões em construção (TIA Portal, firmware do CLP, GSDML do G120C).
+
+### Componentes — Rede PROFINET
+
+| Componente | Especificação | Qtd | Datasheet/Link |
+|-----------|---------------|:---:|----------------|
+| CLP Siemens S7-1214C | CPU 1214C DC/DC/DC ou AC/DC/RLY | 1 | Siemens Support |
+| IHM KTP700 Basic | HMI 7" | 1 | Siemens Support |
+| Inversor SINAMICS G120C |0,55kW a 132kW (0,75CV a 150CV)| 1 | Siemens Support |
+| Cabo PROFINET (RJ45) | — | n | |
+| FL Switch 1000 |10/100/1000 MBit/s | 1 |Phoenix Contact |
+| Gabinete Para quadro Elétrico | 50x40x25cm | 1 |-|
+| Controle de potencia interno | Disjuntores de potência classe C para controle do trifásico e alimentação do CLP | 4 |-|
+| Controle de potencia interno |Disjuntor motor  | 1 |-|
 
 ---
 
