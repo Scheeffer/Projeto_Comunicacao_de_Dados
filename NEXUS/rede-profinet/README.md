@@ -17,7 +17,7 @@ A ideia dentro desta rede é de controlar um motor de 380V e 2cv de potencia atr
 | Sensor / IHM | **IHM KTP700 Basic** (endpoint `192.168.0.10`) |
 | Atuador | **Inversor de frequência SINAMICS G120C** (endpoint `192.168.0.5`) |
 | Bridge backbone | **S7 / ISO‑on‑TCP** via `node‑red‑contrib‑s7` (cycletime 1000 ms) |
-| Ambiente | TIA Portal _(versão: V20)_ |
+| Software | TIA Portal _(versão: V20)_ |
 
 ### Variáveis Disponiveis ao Node-RED
 
@@ -51,7 +51,7 @@ flowchart LR
 
 ---
 
-## 3. Sequência / estados (preencher)
+## 3. Diagrama de Estados 
 
 ```mermaid
 stateDiagram-v2
@@ -62,18 +62,20 @@ stateDiagram-v2
     Rodando --> Falha: alarme do inversor
     Falha --> Parado: reconhecer falha
 ```
+---
+## 4. Diagrama de Sequência
 
+desenvolver
 ---
 
-## 4. Componentes e versões
+## 5. Componentes e Modelos
 
-Ver [`componentes/README.md`](componentes/README.md). Tabela de versões em construção (TIA Portal, firmware do CLP, GSDML do G120C).
 
 ### Componentes — Rede PROFINET
 
 | Componente | Especificação | Qtd | Datasheet/Link |
 |-----------|---------------|:---:|----------------|
-| CLP Siemens S7-1214C | CPU 1214C DC/DC/DC ou AC/DC/RLY | 1 | Siemens Support |
+| CLP Siemens S7-1217C | CPU 1217C DC/DC/DC | 1 | Siemens Support |
 | IHM KTP700 Basic | HMI 7" | 1 | Siemens Support |
 | Inversor SINAMICS G120C |0,55kW a 132kW (0,75CV a 150CV)| 1 | Siemens Support |
 | Cabo PROFINET (RJ45) | — | n | |
