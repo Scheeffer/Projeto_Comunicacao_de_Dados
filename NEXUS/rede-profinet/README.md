@@ -79,7 +79,7 @@ desenvolver
 | Proteção de curto circuito e sobre carga | Disjuntores trifásico 10A curva C  | -| |
 | Fonte de alimentação | 24V VCC 2,5A  | EATON|<a href="https://www.mercadolivre.com.br/fonte-chaveada-24v-25a-psee2g1ac24dc60wsc-phoenix/up/MLBU2744053218#polycard_client=search-desktop&be_origin=backend&search_layout=grid&position=7&type=product&tracking_id=3575352c-2871-414b-bc9d-7d146c6c67a3&wid=MLB5173451578&sid=search" target="_blank">Link</a> 
 ---
-<img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/Componentes%20internos.png" alt=" Componentes" width="200"><img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/IHM%20Externo.png" alt="IHM" width="200"><img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/IHM%20Interno.png" alt="IHM" width="200">
+<img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/Componentes%20internos.png" alt=" Componentes" width="300"><img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/IHM%20Externo.png" alt="IHM" width="300"><img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/IHM%20Interno.png" alt="IHM" width="300">
 ---
 ## 5. Conteúdo desta pasta
 
