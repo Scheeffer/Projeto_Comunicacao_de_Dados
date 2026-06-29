@@ -13,7 +13,7 @@ A ideia dentro desta rede é de controlar um motor de 380V e 2cv de potencia atr
 
 | Item | Valor |
 |------|-------|
-| Controlador | CLP Siemens **S7‑1217 C** (endpoint `192.168.0.1`, rack 0 / slot 1) |
+| Controlador | **CLP Siemens S7‑1217 C** (endpoint `192.168.0.1`, rack 0 / slot 1) |
 | Sensor / IHM | **IHM KTP700 Basic** (endpoint `192.168.0.10`) |
 | Atuador | **Inversor de frequência SINAMICS G120C** (endpoint `192.168.0.5`) |
 | Bridge backbone | **S7 / ISO‑on‑TCP** via `node‑red‑contrib‑s7` (cycletime 1000 ms) |
