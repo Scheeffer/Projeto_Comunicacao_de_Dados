@@ -19,7 +19,7 @@ Célula que usa **PROFINET** (Ethernet industrial, baseado em Ethernet/IP padrã
 | Bridge backbone | **S7 / ISO‑on‑TCP** via `node‑red‑contrib‑s7` (cycletime 1000 ms) |
 | Ambiente | TIA Portal _(versão: V20)_ |
 
-### Variáveis expostas ao Node-RED (DB4)
+### Variáveis Disponiveis ao Node-RED
 
 | Nome | Endereço | Tipo | Uso |
 |------|----------|------|-----|
@@ -43,12 +43,10 @@ Célula que usa **PROFINET** (Ethernet industrial, baseado em Ethernet/IP padrã
 
 ```mermaid
 flowchart LR
-    IHM["IHM KTP700 Basic"] --- PLC["CLP S7-121x C<br/>192.168.0.1 (DB4)"]
-    G120["Inversor G120C"] --- PLC
+    IHM["IHM KTP700 Basic<br/>192.168.0.10"] == "PROFINET" ==> PLC["CLP S7-1217C<br/>192.168.0.1"]
+    G120["Inversor G120C<br/>192.168.0.5"] == "PROFINET" ==> PLC
     PLC == "S7 / ISO-on-TCP" ==> NR["Node-RED (backbone)"]
 ```
-
-> ⚠️ **Nota técnica:** o documento original do grupo afirma que esta célula "utiliza o protocolo MQTT". Isso é um erro de copiar‑colar — o protocolo **local** é **PROFINET**, e a ponte ao Node-RED é via **protocolo S7 (ISO-on-TCP)**, não MQTT.
 
 ---
 
