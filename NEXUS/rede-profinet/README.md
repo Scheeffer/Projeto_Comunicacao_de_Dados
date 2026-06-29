@@ -81,13 +81,4 @@ desenvolver
 ---
 <img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/Componentes%20internos.png" alt=" Componentes" width="300"><img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/IHM%20Externo.png" alt="IHM" width="300"><img src="https://github.com/Scheeffer/Project_Nexus/blob/main/NEXUS/rede-profinet/figs/IHM%20Interno.png" alt="IHM" width="300">
 ---
-## 5. Conteúdo desta pasta
-
-```text
-rede-profinet/
-├── README.md
-├── projeto-tia/   ← projeto TIA Portal exportado (.zap / .ap)
-├── diagramas/     ← blocos, ladder/FBD, rede PROFINET
-├── componentes/   ← S7-1214C, KTP700, G120C (datasheets/links)
-└── figs/          ← fotos da bancada, telas da IHM
 ```
