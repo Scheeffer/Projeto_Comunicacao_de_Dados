@@ -3,13 +3,12 @@
 [![Protocolo](https://img.shields.io/badge/protocolo-PROFINET-blue.svg)](https://www.profibus.com/)
 [![CLP](https://img.shields.io/badge/CLP-Siemens%20S7--1217C-teal.svg)](#)
 
-> 🧩 **Template** — preencher com as informações da Dupla 1. As partes conhecidas já estão pré‑preenchidas.
-
 ---
 
 ## 1. Descrição do projeto
 
-Célula que usa **PROFINET** (Ethernet industrial, baseado em Ethernet/IP padrão) como protocolo local, com um CLP Siemens como mestre. O CLP atua também como **bridge** para o backbone — PROFINET já é Ethernet, então o "subir para o nível Ethernet" se dá expondo as variáveis via **OPC UA** (servidor nativo do S7‑1200, firmware ≥ 4.4) ou **MQTT** (biblioteca LMQTT/`MqttClient` no TIA Portal).
+O protocolo local utilizado é o **PROFINET**, com um CLP s7 1217C operando como mestre da rede, uma IHM operando como sensor e tela de visualização e um Inversor de Frequência, atuando como um atuador final. O CLP também atua como **bridge** para o backbone (node-red) via protocolo **S7 / ISO‑on‑TCP**, um protocolo nativo do proprio CLP. 
+A ideia dentro desta rede é de controlar um motor de 380V e 2cv de potencia atraves de um inversor de frequencia, para isso sera usado a IHM para definir a frequencia, ligar e desligar o motor. Toda a comunicação dentro desta rede independe do backbone, podendo funcionar de forma offline. O grande diferencial desta abordagem é poder conectar dois mundos aparentemente distantes: um motor de alta potencia e um Dashboard altamente tecnologico e moderno.  
 
 | Item | Valor |
 |------|-------|
