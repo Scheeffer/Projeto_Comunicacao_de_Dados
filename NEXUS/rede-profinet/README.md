@@ -73,16 +73,16 @@ desenvolver
 
 ### Componentes — Rede PROFINET
 
-| Componente | Especificação | Qtd | Datasheet/Link |
+| Componente | Especificação | Datasheet | Link |
 |-----------|---------------|:---:|----------------|
-| CLP Siemens S7-1217C | CPU 1217C DC/DC/DC | 1 | Siemens Support |
-| IHM KTP700 Basic | HMI 7" | 1 | Siemens Support |
-| Inversor SINAMICS G120C |0,55kW a 132kW (0,75CV a 150CV)| 1 | Siemens Support |
-| Cabo PROFINET (RJ45) | — | n | |
-| FL Switch 1000 |10/100/1000 MBit/s | 1 |Phoenix Contact |
-| Gabinete Para quadro Elétrico | 50x40x25cm | 1 |-|
-| Controle de potencia interno | Disjuntores de potência classe C para controle do trifásico e alimentação do CLP | 4 |-|
-| Controle de potencia interno |Disjuntor motor  | 1 |-|
+| CLP Siemens S7-1217C | CPU 1217C DC/DC/DC | Siemens Support |<a href="https://www.mercadolivre.com.br/clp-siemens-cpu1217c-dcdcdc-6es7-2171ag400xb0-s71200/up/MLBU3687628652?pdp_filters=item_id%3AMLB6067313602&from=gshop&matt_tool=59586449&matt_word=&matt_source=google&matt_campaign_id=22120855419&matt_ad_group_id=179138688171&matt_match_type=&matt_network=g&matt_device=c&matt_creative=729092955262&matt_keyword=&matt_ad_position=&matt_ad_type=pla&matt_merchant_id=463061090&matt_product_id=MLBU3687628652&matt_product_partition_id=2391408921319&matt_target_id=pla-2391408921319&cq_src=google_ads&cq_cmp=22120855419&cq_net=g&cq_plt=gp&cq_med=pla&gad_source=1&gad_campaignid=22120855419&gbraid=0AAAAAD93qcC-vFAzmTlMO4eXjA2yH04be&gclid=Cj0KCQjwr4jSBhCSARIsAOX1E-LskTHhsEsUYxt1abX5UpLJKIB4Qt8gBJ08Qnp1oUG8r6bVNgvKWEkaAhdOEALw_wcB" target="_blank">Link de compra </a> | 
+| IHM KTP700 Basic | HMI 7" |  Siemens Support | |
+| Inversor SINAMICS G120C |0,55kW a 132kW (0,75CV a 150CV)| Siemens Support | |
+| Cabo PROFINET (RJ45) | — | | |
+| FL Switch 1000 |10/100/1000 MBit/s | Phoenix Contact | |
+| Gabinete Para quadro Elétrico | 50x40x25cm | -|
+| Controle de potencia interno | Disjuntores de potência classe C para controle do trifásico e alimentação do CLP | -| |
+| Controle de potencia interno |Disjuntor motor  | | |
 
 ---
 
