@@ -69,10 +69,6 @@ desenvolver
 ---
 
 ## 5. Componentes e Modelos
-
-
-### Componentes — Rede PROFINET
-
 | Componente | Especificação | Fornecedor| Link | Manual |
 |-----------|---------------|:---:|----------------|-------|
 | CLP Siemens S7-1217C | CPU 1217C DC/DC/DC | Siemens  |<a href="https://www.mercadolivre.com.br/clp-siemens-cpu1217c-dcdcdc-6es7-2171ag400xb0-s71200/up/MLBU3687628652?pdp_filters=item_id%3AMLB6067313602&from=gshop&matt_tool=59586449&matt_word=&matt_source=google&matt_campaign_id=22120855419&matt_ad_group_id=179138688171&matt_match_type=&matt_network=g&matt_device=c&matt_creative=729092955262&matt_keyword=&matt_ad_position=&matt_ad_type=pla&matt_merchant_id=463061090&matt_product_id=MLBU3687628652&matt_product_partition_id=2391408921319&matt_target_id=pla-2391408921319&cq_src=google_ads&cq_cmp=22120855419&cq_net=g&cq_plt=gp&cq_med=pla&gad_source=1&gad_campaignid=22120855419&gbraid=0AAAAAD93qcC-vFAzmTlMO4eXjA2yH04be&gclid=Cj0KCQjwr4jSBhCSARIsAOX1E-LskTHhsEsUYxt1abX5UpLJKIB4Qt8gBJ08Qnp1oUG8r6bVNgvKWEkaAhdOEALw_wcB" target="_blank">Link</a>| <a href="https://cache.industry.siemens.com/dl/files/302/109977302/att_1307432/v2/s71200_system_manual_en-US.pdf" target="_blank">Manual</a>|
@@ -83,7 +79,10 @@ desenvolver
 | Proteção de curto circuito e sobre carga | Disjuntores trifásico 10A curva C  | -| |
 | Fonte de alimentação | 24V VCC 2,5A  | EATON|<a href="https://www.mercadolivre.com.br/fonte-chaveada-24v-25a-psee2g1ac24dc60wsc-phoenix/up/MLBU2744053218#polycard_client=search-desktop&be_origin=backend&search_layout=grid&position=7&type=product&tracking_id=3575352c-2871-414b-bc9d-7d146c6c67a3&wid=MLB5173451578&sid=search" target="_blank">Link</a> 
 ---
-
+<img src="" alt="Logo da Empresa" width="200">
+<img src="." alt="Logo da Empresa" width="200">
+<img src="." alt="Logo da Empresa" width="200">
+<img src="." alt="Logo da Empresa" width="200">
 ## 5. Conteúdo desta pasta
 
 ```text
