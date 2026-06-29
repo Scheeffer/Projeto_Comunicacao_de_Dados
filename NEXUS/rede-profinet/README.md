@@ -31,7 +31,6 @@ Célula que usa **PROFINET** (Ethernet industrial, baseado em Ethernet/IP padrã
 | `HABILITA NODE RED` | `DB2,X10.1` | bool | Habilita o comando via node red |
 | `FDK_VEL` | `DB6,REAL4` | real | Feedback da velocidade rede can |
 
-> ⚠️ No flow atual, o endereço de `STOP` aparece como **`DB4.DBX.0.1`** (ponto extra) — corrigir para **`DB4.DBX0.1`**, senão o nó S7 não resolve.
 
 ---
 
