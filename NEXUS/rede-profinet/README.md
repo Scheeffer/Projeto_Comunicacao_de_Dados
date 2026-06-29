@@ -81,7 +81,7 @@ desenvolver
 | FL Switch 1000 |10/100/1000 MBit/s | Phoenix Contact | <a href="https://www.mercadolivre.com.br/switch-ethernet-industrial-8-portas-rj-45-phoenix-contact-100mbs/p/MLB22766483#polycard_client=search-desktop&be_origin=backend&search_layout=grid&position=10&type=product&tracking_id=efb02124-a3e4-4a02-90ae-1a1b275c851e&wid=MLB5157563910&sid=search" target="_blank">Link</a>| <a href="https://product-download.phoenixcontact.com/9745187?response-content-disposition=inline;%20filename%3D%224138_en_E.pdf%22&Expires=1782785463&Signature=msPp8Eq8MXTxJ6kaXXaRVwvEBTcI-9kMYA-qBCapOC9VKcxcGpJtXoBGBoz889TkVqNsSzWGy8udwmioMobk82UywyKuueZn2JCsGU5mjFtz2bECTVISr5Ze3GAnM9FroefE6gqFY9chRWQXxiIxv11I2~RE5xv0H~UReCsvXjASOKIzFKflEyqU6pojK6w4GKmOYfo8~p2KynMD~w~~qjwhNZaE2QEdRF7lLoyhFBnpOLcZXrSwF~5091PX1EHsyTGtLYjR7wzFR-20AH7g8fCGye3YClK-fKr8-6c8hrldg18A8ywB9pbiPyqvPcLXmnDX~HSYD-vUQzr3QjEf5A__&Key-Pair-Id=K1I2N54A7B0GD" target="_blank">Manual</a>|
 | Gabinete Para quadro Elétrico | 50x40x25cm | -|
 | Proteção de curto circuito e sobre carga | Disjuntores trifásico 10A curva C  | -| |
-| Fonte de alimentação | 24V VCC 2,5A  | EATON|<a href="" target="_blank">Link</a> 
+| Fonte de alimentação | 24V VCC 2,5A  | EATON|<a href="https://www.mercadolivre.com.br/fonte-chaveada-24v-25a-psee2g1ac24dc60wsc-phoenix/up/MLBU2744053218#polycard_client=search-desktop&be_origin=backend&search_layout=grid&position=7&type=product&tracking_id=3575352c-2871-414b-bc9d-7d146c6c67a3&wid=MLB5173451578&sid=search" target="_blank">Link</a> 
 ---
 
 ## 5. Conteúdo desta pasta
