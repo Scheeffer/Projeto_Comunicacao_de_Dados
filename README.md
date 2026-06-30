@@ -27,7 +27,7 @@ O critério central é a **interoperabilidade**: ao final, *o status de qualquer
 |------|-------|
 | Instituição | IFSC — Departamento Acadêmico de Eletrônica |
 | Disciplina | Comunicação de Dados |
-| Integrantes | Matheus & Cainã, Álvaro e Alexandre, Henzo e Lucas |
+| Integrantes | Matheus e Cainã, Álvaro e Alexandre, Henzo e Lucas |
 | Integração | Backbone Ethernet + Broker MQTT central (Node-RED) |
 
 
