@@ -13,11 +13,11 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 
 | Item | Valor |
 |------|-------|
-| Controlador Base | **Microcontrolador ESP32** (NodeMCU - Camada de Aplicação) |
+| Controlador Base | **Microcontrolador ESP32** (MCU - Camada de Aplicação) |
 | Controlador CAN | **Módulo MCP2515** + Transceptor TJA1050 (Cristal de 8MHz / SPI) |
 | Atuador Local | **Painel de Indicadores de Bancada E620** ( ID `0x4D2`) |
 | Bridge backbone | **HTTP Client (POST / GET)** nativo via `esp_http_client` (MIME: `text/plain`) |
-| Software | VS Code + ESP-IDF (Espressif IoT Development Framework) |
+| Software | ESP-IDF V5.4|
 
 ### Variáveis Disponíveis ao Node-RED / Servidor HTTP
 
