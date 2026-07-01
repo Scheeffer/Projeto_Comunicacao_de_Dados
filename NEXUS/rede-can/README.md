@@ -1,77 +1,42 @@
-# 🟩 Rede CAN — Célula 2 (Álvaro & Alexandre)
+# 🟥 Rede CAN — Célula 2 (Alexandre & Alvaro)
 
-[![Protocolo](https://img.shields.io/badge/protocolo-CAN-green.svg)](https://www.csselectronics.com/pages/can-bus-simple-intro-tutorial)
-[![MCU](https://img.shields.io/badge/MCU-ESP32%20TWAI-teal.svg)](#)
-[![Bridge](https://img.shields.io/badge/bridge-HTTP%20REST%20%E2%86%92%20Node--RED-blue.svg)](#)
-
-Célula que usa **CAN** localmente e **HTTP REST** para falar com o backbone (Node-RED). O sensor CAN é um **nó ESP32 substituto** (potenciômetro), e o atuador é o **Display Dashboard E620** (kit automotivo — daí o gauge de **km/h** no dashboard).
-
-> 🧩 Template — a Dupla 2 preenche o que falta. O lado do **backbone** (Node-RED) já está documentado a partir do flow real.
+[![Protocolo](https://img.shields.io/badge/protocolo-CAN%202.0A-red.svg)](https://www.iso.org/standard/63648.html)
+[![Controlador](https://img.shields.io/badge/Gateway-ESP32%20%2F%20MCP2515-orange.svg)](#)
 
 ---
 
-## 1. Descrição e integração real
+## 1. Descrição do projeto
 
-O ESP32 da célula CAN está em **`192.168.0.63`** e troca dados com o Node-RED por **HTTP**:
+O protocolo local utilizado nesta célula é o **CAN (Controller Area Network)** operando a uma taxa de barramento industrial de **250 Kbps**. A rede é composta por microcontroladores **ESP32** acoplados a controladores autônomos de protocolo **MCP2515** via interface de periféricos serial (**SPI**). O ESP32 principal atua como o nó mestre/gateway local da bancada, coletando os sinais do barramento e disponibilizando uma interface gráfica de monitoramento por meio de um Web Server HTTP nativo. 
 
-| Direção | Quem chama | Endpoint | Conteúdo |
-|---------|-----------|----------|----------|
-| CAN → backbone | ESP32 → Node-RED | `POST /can` | leitura do nó CAN (ex. velocidade) |
-| backbone → CAN | Node-RED → ESP32 | `POST http://192.168.0.63/set_nodered_freq` | frequência/velocidade alvo |
-| backbone → CAN | Node-RED → ESP32 | `POST http://192.168.0.63/set_nodered_value` | valor genérico |
+O grande objetivo desta célula é ler de maneira contínua os dados de um sensor analógico (potenciômetro) mapeado sob o identificador exclusivo CAN `, processar os pacotes para o cálculo de velocidade real em km/h e comandar um painel atuador de indicadores (Painel E620) via ID CAN `0x4D2`. O Gateway ESP32 também atua como **bridge** para o backbone (Node-RED) por meio de requisições assíncronas **HTTP (POST/GET)** em formato de texto puro (`text/plain`) e JSON. A grande vantagem desse design é garantir a operação offline e robusta da rede de campo CAN, enquanto permite a convergência com o sistema supervisório centralizado.
 
 | Item | Valor |
 |------|-------|
-| Controlador | **ESP32** (periférico TWAI/CAN) |
-| Sensor | Potenciômetro lido por nó ESP32 (substituto CAN) |
-| Atuador | **Display Dashboard E620** (lab. EMOL/IFSC) |
-| Transceiver CAN | _preencher_ (ex. SN65HVD230) |
-| Bridge backbone | **HTTP REST** (não MQTT) |
+| Controlador Base | **Microcontrolador ESP32** (MCU - Camada de Aplicação) |
+| Controlador CAN | **Módulo MCP2515** + Transceptor TJA1050 (Cristal de 8MHz / SPI) |
+| Atuador Local | **Painel de Indicadores de Bancada E620** ( ID `0x4D2`) |
+| Bridge backbone | **HTTP Client (POST / GET)** nativo via `esp_http_client` (MIME: `text/plain`) |
+| Software | ESP-IDF V5.4|
+
+### Variáveis Disponíveis ao Node-RED / Servidor HTTP
+
+| Nome | Rota / Endpoint | Tipo no Node-RED | Uso / Formato de Origem |
+|------|----------------|-------------------|-------------------------|
+| `g_valor_can_bruto` | `/data` (JSON) | string | Valor decimal bruto do potenciômetro (origem `uint16_t` na CAN) |
+| `g_velocidade` | `/data` (JSON) | string | Velocidade física calculada em km/h (origem `float`) |
+| `g_slider_value` | `/set_slider` | string | Posição do Slider alterada na página HTML (origem `int`) |
+| `g_node_red_slider` | `/set_nodered_value` | string | Setpoint enviado do Node-RED para a rede CAN (convertido para `int` no ESP32) |
+| `g_node_red_freq` | `/set_nodered_freq` | string | Referência de frequência do CLP enviada ao ESP32 como texto puro |
+| `ligar` | `/ligar` (POST) | string | Comando de partida enviado como o texto `"true"` |
+| `desligar` | `/desligar` (POST) | string | Comando de paragem enviado como o texto `"true"` |
 
 ---
 
 ## 2. Diagrama de blocos
 
-```mermaid
-flowchart LR
-    POT["Potenciômetro<br/>(nó CAN substituto)"] -- "CAN" --> ESP["ESP32 192.168.0.63<br/>TWAI + servidor HTTP"]
-    ESP -- "CAN" --> DISP["Display E620<br/>(km/h)"]
-    ESP == "POST /can" ==> NR["Node-RED (backbone)"]
-    NR == "POST /set_nodered_freq<br/>/set_nodered_value" ==> ESP
-```
-
-> ⚠️ Transceiver CAN (ex. SN65HVD230) é **obrigatório** — o ESP32 só tem o controlador lógico (TWAI), não o driver de barramento. Terminação **120 Ω** nas duas pontas.
+<p align="center">
+  <img src="figs/diagrama_rede_can.png" alt="Topologia Física da Rede CAN - Célula 2" width="700">
+</p>
 
 ---
-
-## 3. Máquina de estados (preencher)
-
-```mermaid
-stateDiagram-v2
-    [*] --> Init
-    Init --> BusOn: TWAI configurado + WiFi/HTTP up
-    BusOn --> Tx: envia frame CAN
-    BusOn --> Rx: recebe frame CAN
-    Rx --> AtualizaDisplay
-    Tx --> PostHTTP: POST /can ao Node-RED
-    AtualizaDisplay --> BusOn
-    PostHTTP --> BusOn
-    BusOn --> BusOff: erros acumulados
-    BusOff --> Init: recovery
-```
-
----
-
-## 4. Conteúdo desta pasta
-
-```text
-rede-can/
-├── README.md
-├── firmware/     ← código do ESP32 (TWAI + servidor HTTP)  [a versionar]
-├── diagramas/
-├── componentes/
-└── figs/
-```
-
-> O **flow do Node-RED** que recebe o `POST /can` e envia comandos está em
-> [`backbone/node-red/flows-backbone.json`](../backbone/node-red/flows-backbone.json).
