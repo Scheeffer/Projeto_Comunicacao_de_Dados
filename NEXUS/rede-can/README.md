@@ -35,23 +35,8 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 
 ## 2. Diagrama de blocos
 
-```mermaid
-graph TD
-    %% Nós da Rede e Conexões Locais
-    POT["Sensor: Potenciômetro Linear"] -->|Sinal Analógico| ESP_S["ESP32 (Nó Sensor)"]
-    ESP_S <-->|Interface SPI| MCP_S["Transceiver MCP2515"]
+<p align="center">
+  <img src="figs/diagrama_rede_can.png" alt="Topologia Física da Rede CAN - Célula 2" width="700">
+</p>
 
-    PAINEL["Atuador: Painel E620"]
-
-    MCP_G["Transceiver MCP2515"] <-->|Interface SPI| ESP_G["ESP32 (Gateway Central)"]
-    ESP_G == "Wi-Fi (HTTP POST/GET)" ==> NR["Node-RED (backbone)<br/>192.168.0.11"]
-
-    %% Linhas de Barramento Físico (Sem cores customizadas)
-    MCP_S <==> CANH["Linha CANH (Alta)"]
-    MCP_S <==> CANL["Linha CANL (Baixa)"]
-
-    PAINEL <==> CANH
-    PAINEL <==> CANL
-
-    MCP_G <==> CANH
-    MCP_G <==> CANL
+---
