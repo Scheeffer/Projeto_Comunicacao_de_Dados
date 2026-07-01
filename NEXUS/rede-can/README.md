@@ -33,17 +33,3 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 | `desligar` | `/desligar` (POST) | string | Comando de paragem enviado como o texto `"true"` |
 
 ---
-
-## 3. Diagrama de Estados (Simplificado)
-
-```mermaid
-stateDiagram-v2
-    [*] --> Desligado : app_main()
-    
-    Desligado --> Modo_Potenciometro : Inicializa SPI/ADC
-    
-    Modo_Potenciometro --> Modo_NodeRED : Chegou Frame ID 0x100 (Rede)
-    Modo_NodeRED --> Modo_Potenciometro : Usuário mexeu no Potenciômetro (> 2.5%)
-    
-    Modo_Potenciometro --> Desligado : Desligar o sistema
-    Modo_NodeRED --> Desligado : Desligar o sistema
