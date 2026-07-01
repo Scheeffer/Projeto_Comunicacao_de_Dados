@@ -13,7 +13,7 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 
 | Item | Valor |
 |------|-------|
-| Controlador Base | **Microcontrolador ESP32** (MCU - Camada de Aplicação) |
+| Controladores Base | **Microcontrolador ESP32 WROOM DEV-KIT V1** |
 | Controlador CAN | **Módulo MCP2515** + Transceptor TJA1050 (Cristal de 8MHz / SPI) |
 | Atuador Local | **Painel de Indicadores de Bancada E620** ( ID `0x4D2`) |
 | ponte backbone | **HTTP Client (POST / GET)** nativo via `esp_http_client` (MIME: `text/plain`) |
