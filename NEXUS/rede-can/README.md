@@ -21,15 +21,15 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 
 ### Variáveis Disponíveis ao Node-RED / Servidor HTTP
 
-| Nome | Rota / Endpoint | Tipo | Uso |
-|------|----------------|------|-----|
-| `g_valor_can_bruto` | `/data` (JSON) | uint16_t | Valor decimal bruto do potenciômetro lido no ID CAN `0x4D2` |
-| `g_velocidade` | `/data` (JSON) | real | Velocidade física calculada em km/h (`g_valor_can_bruto / 10.0f`) |
-| `g_slider_value` | `/set_slider` | int | Frequência de ajuste local definida pela página HTML do ESP32 |
-| `g_node_red_slider` | `/set_nodered_value` | int | Injeção de setpoint vinda do Node-RED para a rede CAN (ID `0x100`) |
-| `g_node_red_freq` | `/set_nodered_freq` | int | Referência de frequência lida do CLP e repassada ao ESP32 |
-| `ligar` | `/ligar` (POST) | bool | comando para ligar o clp |
-| `desligar` | `/desligar` (POST) | bool | comnado para desligar o clp |
+| Nome | Rota / Endpoint | Tipo no Node-RED | Uso / Formato de Origem |
+|------|----------------|-------------------|-------------------------|
+| `g_valor_can_bruto` | `/data` (JSON) | string | Valor decimal bruto do potenciômetro (origem `uint16_t` na CAN) |
+| `g_velocidade` | `/data` (JSON) | string | Velocidade física calculada em km/h (origem `float`) |
+| `g_slider_value` | `/set_slider` | string | Posição do Slider alterada na página HTML (origem `int`) |
+| `g_node_red_slider` | `/set_nodered_value` | string | Setpoint enviado do Node-RED para a rede CAN (convertido para `int` no ESP32) |
+| `g_node_red_freq` | `/set_nodered_freq` | string | Referência de frequência do CLP enviada ao ESP32 como texto puro |
+| `ligar` | `/ligar` (POST) | string | Comando de partida enviado como o texto `"true"` |
+| `desligar` | `/desligar` (POST) | string | Comando de paragem enviado como o texto `"true"` |
 
 ---
 
