@@ -34,26 +34,16 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 
 ---
 
-## 3. Diagrama de Estados (Controle do Sensor e Atuador)
+## 3. Diagrama de Estados (Simplificado)
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Inicializacao : app_main()
-    Inicializacao --> Modo_Potenciometro : ADC_Init() e CAN_250KBPS OK
+    [*] --> Desligado : app_main()
     
-    state Modo_Potenciometro {
-        [*] --> Lendo_ADC
-        Lendo_ADC --> Transmitindo_Display : Envia ID 0x4D2 (Frequência local)
-    }
-
-    %% Transição para o modo Rede
-    Modo_Potenciometro --> Modo_NodeRED : [EVENTO REDE] Chegou Frame ID 0x100
+    Desligado --> Modo_Potenciometro : Inicializa SPI/ADC
     
-    state Modo_NodeRED {
-        [*] --> Atualiza_Memoria : g_velocidade_sistema = frame_rx.data[1] * 10
-        Atualiza_Memoria --> Transmitindo_Display_Remoto : Envia ID 0x4D2 (Frequência da Rede)
-    }
-
-    %% Transição de volta para o modo físico por variação mecânica
-    Modo_NodeRED --> Modo_Potenciometro : [EVENTO HARDWARE] Variação do Potenciômetro > Threshold (2.5%)
-    Modo_NodeRED --> Modo_Potenciometro : [EVENTO HARDWARE] Potenciômetro zerado fisicamente
+    Modo_Potenciometro --> Modo_NodeRED : Chegou Frame ID 0x100 (Rede)
+    Modo_NodeRED --> Modo_Potenciometro : Usuário mexeu no Potenciômetro (> 2.5%)
+    
+    Modo_Potenciometro --> Desligado : Desligar o sistema
+    Modo_NodeRED --> Desligado : Desligar o sistema
