@@ -41,3 +41,37 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 </p>
 
 ---
+
+## 3. Diagrama de Estados 
+
+```mermaid
+stateDiagram-v2
+    [*] --> Inicializacao : app_main()
+    
+    state Inicializacao {
+        [*] --> Init_Perifericos : NVS & MCP2515_init()
+        Init_Perifericos --> Config_Hardware : SPI_Init() & MCP2515_reset()
+        Config_Hardware --> Config_CAN : setBitrate(CAN_250KBPS, MCP_8MHZ)
+        Config_CAN --> Modo_Normal : setNormalMode()
+    }
+
+    Inicializacao --> Aguardando_WiFi : wifi_init()
+    Aguardando_WiFi --> Sistema_Ativo : IP_EVENT_STA_GOT_IP / start_webserver()
+
+    state Sistema_Ativo {
+        [*] --> Idle_Concorrente
+        
+        %% Fluxo da Tarefa CAN (Polling SPI)
+        Idle_Concorrente --> Polling_CAN_SPI : CAN_Task (A cada 50ms)
+        Polling_CAN_SPI --> Processa_Frame_0x4D2 : ID recebido == 0x4D2
+        Processa_Frame_0x4D2 --> Idle_Concorrente : Recompõe 16-bits, calcula velocidade & send_data_to_nodered()
+        
+        %% Fluxo dos Handlers do Servidor Web
+        Idle_Concorrente --> Tratamento_HTTP_GET : Requisição na rota "/" ou "/data"
+        Tratamento_HTTP_GET --> Idle_Concorrente : Retorna HTML Local ou pacote JSON
+
+        Idle_Concorrente --> Tratamento_HTTP_POST : Chamada em /set_slider, /ligar ou /desligar
+        Tratamento_HTTP_POST --> Idle_Concorrente : Repassa String ao Node-RED & Envia Frame 0x100 via SPI
+    }
+
+    Sistema_Ativo --> Aguardando_WiFi : WIFI_EVENT_STA_DISCONNECTED
