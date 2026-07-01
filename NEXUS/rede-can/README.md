@@ -35,48 +35,22 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 
 ## 2. Diagrama de blocos
 
-```mermaid
 graph TD
-    %% Linhas do Barramento Principal
-    subgraph Barramento_CAN [Barramento Físico CAN - 250 Kbps]
-        CANH[Linha CANH - Fio Vermelho]
-        CANL[Linha CANL - Fio Verde]
-    end
+    %% Nós da Rede e Conexões Locais
+    POT["Sensor: Potenciômetro Linear"] -->|Sinal Analógico| ESP_S["ESP32 (Nó Sensor)"]
+    ESP_S <-->|Interface SPI| MCP_S["Transceiver MCP2515"]
 
-    %% Nó Transmissor (Sensor)
-    subgraph No_Sensor [Nó 1: Sensor / Transmissor]
-        POT[Potenciômetro Linear] -->|Sinal Analógico| ESP_S[ESP32 Nó Sensor]
-        ESP_S <-->|Interface SPI| MCP_S[Transceiver MCP2515]
-    end
+    PAINEL["Atuador: Painel E620"]
 
-    %% Nó Atuador Físico
-    subgraph No_Atuador [Nó 2: Atuador Local]
-        PAINEL[Painel de Indicadores E620]
-    end
+    MCP_G["Transceiver MCP2515"] <-->|Interface SPI| ESP_G["ESP32 (Gateway Central)"]
+    ESP_G == "Wi-Fi (HTTP POST/GET)" ==> NR["Node-RED (backbone)<br/>192.168.0.11"]
 
-    %% Nó Gateway (Conexão Backbone)
-    subgraph No_Gateway [Nó 3: Gateway / Receptor]
-        MCP_G[Transceiver MCP2515] <-->|Interface SPI| ESP_G[ESP32 Gateway Central]
-        ESP_G <-->|Wi-Fi: HTTP POST/GET| NR["Node-RED (backbone)<br/>192.168.0.11"]
-    end
+    %% Linhas de Barramento Físico (Sem cores customizadas)
+    MCP_S <==> CANH["Linha CANH (Alta)"]
+    MCP_S <==> CANL["Linha CANL (Baixa)"]
 
-    %% Conexões ao barramento físico
-    MCP_S <--> CANH
-    MCP_S <--> CANL
-    
-    PAINEL <--> CANH
-    PAINEL <--> CANL
-    
-    MCP_G <--> CANH
-    MCP_G <--> CANL
+    PAINEL <==> CANH
+    PAINEL <==> CANL
 
-    %% Estilização de Cores
-    classDef canh_style fill:#ef4444,stroke:#333,stroke-width:2px,color:#fff;
-    classDef canl_style fill:#22c55e,stroke:#333,stroke-width:2px,color:#fff;
-    classDef esp_style fill:#1e293b,stroke:#0284c7,stroke-width:2px,color:#fff;
-    classDef dev_style fill:#334155,stroke:#475569,stroke-width:1px,color:#fff;
-    
-    class CANH canh_style;
-    class CANL canl_style;
-    class ESP_S,ESP_G esp_style;
-    class POT,PAINEL,NR dev_style;
+    MCP_G <==> CANH
+    MCP_G <==> CANL
