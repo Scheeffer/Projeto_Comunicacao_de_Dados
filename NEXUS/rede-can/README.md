@@ -35,6 +35,7 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 
 ## 2. Diagrama de blocos
 
+```mermaid
 graph TD
     %% Nós da Rede e Conexões Locais
     POT["Sensor: Potenciômetro Linear"] -->|Sinal Analógico| ESP_S["ESP32 (Nó Sensor)"]
