@@ -33,3 +33,11 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 | `desligar` | `/desligar` (POST) | string | Comando de paragem enviado como o texto `"true"` |
 
 ---
+
+## 2. Diagrama de blocos
+
+<p align="center">
+  <img src="figs/diagrama_rede_can.png" alt="Topologia Física da Rede CAN - Célula 2" width="750">
+</p>
+
+---
