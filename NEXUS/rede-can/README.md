@@ -34,44 +34,26 @@ O grande objetivo desta célula é ler de maneira contínua os dados de um senso
 
 ---
 
-## 2. Diagrama de blocos
-
-<p align="center">
-  <img src="figs/diagrama_rede_can.png" alt="Topologia Física da Rede CAN - Célula 2" width="700">
-</p>
-
----
-
-## 3. Diagrama de Estados 
+## 3. Diagrama de Estados (Controle do Sensor e Atuador)
 
 ```mermaid
 stateDiagram-v2
     [*] --> Inicializacao : app_main()
+    Inicializacao --> Modo_Potenciometro : ADC_Init() e CAN_250KBPS OK
     
-    state Inicializacao {
-        [*] --> Init_Perifericos : NVS & MCP2515_init()
-        Init_Perifericos --> Config_Hardware : SPI_Init() & MCP2515_reset()
-        Config_Hardware --> Config_CAN : setBitrate(CAN_250KBPS, MCP_8MHZ)
-        Config_CAN --> Modo_Normal : setNormalMode()
+    state Modo_Potenciometro {
+        [*] --> Lendo_ADC
+        Lendo_ADC --> Transmitindo_Display : Envia ID 0x4D2 (Frequência local)
     }
 
-    Inicializacao --> Aguardando_WiFi : wifi_init()
-    Aguardando_WiFi --> Sistema_Ativo : IP_EVENT_STA_GOT_IP / start_webserver()
-
-    state Sistema_Ativo {
-        [*] --> Idle_Concorrente
-        
-        %% Fluxo da Tarefa CAN (Polling SPI)
-        Idle_Concorrente --> Polling_CAN_SPI : CAN_Task (A cada 50ms)
-        Polling_CAN_SPI --> Processa_Frame_0x4D2 : ID recebido == 0x4D2
-        Processa_Frame_0x4D2 --> Idle_Concorrente : Recompõe 16-bits, calcula velocidade & send_data_to_nodered()
-        
-        %% Fluxo dos Handlers do Servidor Web
-        Idle_Concorrente --> Tratamento_HTTP_GET : Requisição na rota "/" ou "/data"
-        Tratamento_HTTP_GET --> Idle_Concorrente : Retorna HTML Local ou pacote JSON
-
-        Idle_Concorrente --> Tratamento_HTTP_POST : Chamada em /set_slider, /ligar ou /desligar
-        Tratamento_HTTP_POST --> Idle_Concorrente : Repassa String ao Node-RED & Envia Frame 0x100 via SPI
+    %% Transição para o modo Rede
+    Modo_Potenciometro --> Modo_NodeRED : [EVENTO REDE] Chegou Frame ID 0x100
+    
+    state Modo_NodeRED {
+        [*] --> Atualiza_Memoria : g_velocidade_sistema = frame_rx.data[1] * 10
+        Atualiza_Memoria --> Transmitindo_Display_Remoto : Envia ID 0x4D2 (Frequência da Rede)
     }
 
-    Sistema_Ativo --> Aguardando_WiFi : WIFI_EVENT_STA_DISCONNECTED
+    %% Transição de volta para o modo físico por variação mecânica
+    Modo_NodeRED --> Modo_Potenciometro : [EVENTO HARDWARE] Variação do Potenciômetro > Threshold (2.5%)
+    Modo_NodeRED --> Modo_Potenciometro : [EVENTO HARDWARE] Potenciômetro zerado fisicamente
